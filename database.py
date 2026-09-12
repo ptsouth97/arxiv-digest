@@ -35,7 +35,9 @@ def save_paper(
     teaching_level,
     priority,
     topics,
-    research_tags
+    research_tags,
+    why_blake_should_read_this,
+    research_priority,
 ):
 
     conn = get_connection()
@@ -52,9 +54,11 @@ def save_paper(
             teaching_level,
             priority,
             topics,
-            research_tags
+            research_tags,
+            why_blake_should_read_this,
+            research_priority
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """,
     (
         link,
@@ -65,7 +69,9 @@ def save_paper(
         teaching_level,
         priority,
         topics,
-        research_tags
+        research_tags,
+        why_blake_should_read_this,
+        research_priority
     ))
 
     conn.commit()
@@ -84,7 +90,8 @@ def save_paper(
         teaching_level TEXT,
         priority TEXT,
         topics TEXT,
-        research_tags TEXT
+        research_tags TEXT,
+        why_blake_should_read_this TEXT
     )
 """)
 
@@ -109,9 +116,47 @@ def initialize_database():
             teaching_level TEXT,
             priority TEXT,
             topics TEXT,
-            research_tags TEXT
+            research_tags TEXT,
+            why_blake_should_read_this TEXT,
+            research_priority TEXT,
+            saved INTEGER DEFAULT 0
         )
     """)
+
+    conn.commit()
+    conn.close()
+    
+def mark_saved(link):
+
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute(
+        """
+        UPDATE papers
+        SET saved = 1
+        WHERE link = ?
+        """,
+        (link,)
+    )
+
+    conn.commit()
+    conn.close()
+
+
+def mark_unsaved(link):
+
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute(
+        """
+        UPDATE papers
+        SET saved = 0
+        WHERE link = ?
+        """,
+        (link,)
+    )
 
     conn.commit()
     conn.close()

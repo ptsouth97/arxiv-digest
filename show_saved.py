@@ -3,12 +3,10 @@ import sqlite3
 conn = sqlite3.connect("papers.db")
 
 for row in conn.execute("""
-    SELECT
-        title,
-        research_priority
+    SELECT title
     FROM papers
-    LIMIT 15
+    WHERE saved = 1
 """):
-    print(row)
+    print(row[0])
 
 conn.close()

@@ -36,11 +36,13 @@ for i, entry in enumerate(feed.entries):
             entry.title,
             entry.summary
         )
-        
 
         if not isinstance(result, dict):
-            print(f"Skipping paper due to summary error: {entry.title}")
+            print(f"Summary failed for: {entry.title}")
+            print(result)
             continue
+     
+
 
         main_result = result["main_result"]
 
@@ -63,7 +65,9 @@ for i, entry in enumerate(feed.entries):
             result["teaching_level"],
             result["priority"],
             ",".join(result["topics"]),
-            ",".join(result["research_tags"])
+            ",".join(result["research_tags"]),
+            result["why_blake_should_read_this"],
+            result["research_priority"]
         )
         
     papers.append(
